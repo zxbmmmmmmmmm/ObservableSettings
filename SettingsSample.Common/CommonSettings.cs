@@ -6,8 +6,8 @@ namespace SettingsSample.Common;
 public partial class CommonSettings : ObservableObject
 {
     [ObservableProperty]
-    public string Name { get; set; }
+    public partial string Name { get; set; }
 
     [ObservableProperty]
-    public ObservableCollection<string> Names { get; set; }
+    public partial ObservableCollection<string> Names { get; set; }
 }

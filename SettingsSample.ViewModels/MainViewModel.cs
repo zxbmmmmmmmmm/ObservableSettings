@@ -5,9 +5,9 @@ namespace SettingsSample.ViewModels;
 
 public class MainViewModel : ObservableObject
 {
-    private CommonSettings _settings;
+    public CommonSettings Settings { get; }
     public MainViewModel(CommonSettings settings)
     {
-        _settings = settings;
+        Settings = settings;
     }
 }

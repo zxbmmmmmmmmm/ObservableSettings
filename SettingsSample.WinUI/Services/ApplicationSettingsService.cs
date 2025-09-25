@@ -11,9 +11,9 @@ public class ApplicationSettingsService
     private List<ObservableObject> _settingsToListen = [];
     public T LoadAndListenSettings<T>() where T : ObservableObject, new()
     {
-        if (!ApplicationData.Current.LocalSettings.Containers.ContainsKey(nameof(T)))
-            ApplicationData.Current.LocalSettings.CreateContainer(nameof(T), ApplicationDataCreateDisposition.Always);
-        var container = ApplicationData.Current.LocalSettings.Containers[nameof(T)];
+        if (!ApplicationData.Current.LocalSettings.Containers.ContainsKey(typeof(T).Name))
+            ApplicationData.Current.LocalSettings.CreateContainer(typeof(T).Name, ApplicationDataCreateDisposition.Always);
+        var container = ApplicationData.Current.LocalSettings.Containers[typeof(T).Name];
         var setting = new T();
         var properties = typeof(T).GetProperties();
 
@@ -73,6 +73,15 @@ public static class ApplicationDataContainerExtensions
                         ulong or
                         Uri:
                         return (T)container.Values[propertyName];
+                    case null:
+                        try
+                        {
+                            return (T)container.Values[propertyName];
+                        }
+                        catch
+                        {
+                            return JsonSerializer.Deserialize<T>((string)value);
+                        }
                     default:
                         return JsonSerializer.Deserialize<T>((string)value);
                 }

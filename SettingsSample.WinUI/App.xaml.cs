@@ -19,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SettingsSample.Common;
 using SettingsSample.WinUI.Services;
+using SettingsSample.ViewModels;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,18 +33,19 @@ public partial class App : Application
 {
     private Window? _window;
 
-    private readonly IHost _host = Host.CreateDefaultBuilder()
+    private static readonly IHost _host = Host.CreateDefaultBuilder()
         .ConfigureServices((context, services) =>
         {
             var settingsService = new ApplicationSettingsService();
             var commonSettings = settingsService.LoadAndListenSettings<CommonSettings>();
             services.AddSingleton(settingsService);
             services.AddSingleton(commonSettings);
+            services.AddSingleton<MainViewModel>();
             // Register your services here
         })
         .Build();
 
-    public T GetService<T>() where T : class
+    public static T GetService<T>() where T : class
     {
         return _host.Services.GetService(typeof(T)) as T ?? throw new InvalidOperationException($"Service of type {typeof(T)} not registered.");
     }

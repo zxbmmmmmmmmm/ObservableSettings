@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using SettingsSample.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -23,6 +24,7 @@ namespace SettingsSample.WinUI;
 /// </summary>
 public sealed partial class MainWindow : Window
 {
+    public MainViewModel ViewModel { get; } = App.GetService<MainViewModel>();
     public MainWindow()
     {
         InitializeComponent();
