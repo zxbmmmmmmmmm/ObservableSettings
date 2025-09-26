@@ -3,6 +3,8 @@
     x:Class="SettingsSample.WinUI.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:common="using:SettingsSample.Common"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:SettingsSample.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -14,6 +16,45 @@
     </Window.SystemBackdrop>
 
     <Grid>
-        <TextBox Text="{x:Bind ViewModel.Settings.Name, Mode=TwoWay}" Height="64"/>
+        <StackPanel
+            Margin="24"
+            x:DefaultBindMode="TwoWay"
+            Spacing="12">
+            <controls:SettingsCard Header="String">
+                <TextBox Text="{x:Bind ViewModel.Settings.Name}" />
+            </controls:SettingsCard>
+
+            <controls:SettingsCard Header="Int">
+                <NumberBox SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.Settings.Count}" />
+            </controls:SettingsCard>
+
+            <controls:SettingsCard Header="Bool">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.Settings.IsEnabled}" />
+            </controls:SettingsCard>
+
+            <controls:SettingsExpander Header="List" ItemsSource="{x:Bind ViewModel.Settings.Students}">
+                <controls:SettingsExpander.ItemTemplate>
+                    <DataTemplate x:DataType="common:Student">
+                        <controls:SettingsCard Header="{x:Bind Name}" IsClickEnabled="True">
+                            <NumberBox Value="{x:Bind Age}" />
+                        </controls:SettingsCard>
+                    </DataTemplate>
+                </controls:SettingsExpander.ItemTemplate>
+                <controls:SettingsExpander.ItemsFooter>
+                    <controls:SettingsCard
+                        Command="{x:Bind ViewModel.AddStudentCommand, Mode=OneTime}"
+                        Header="Add"
+                        HeaderIcon="Add"
+                        IsClickEnabled="True">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <TextBox Text="{x:Bind ViewModel.Student.Name}" />
+                            <NumberBox Value="{x:Bind ViewModel.Student.Age}" />
+                        </StackPanel>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.ItemsFooter>
+            </controls:SettingsExpander>
+
+
+        </StackPanel>
     </Grid>
 </Window>

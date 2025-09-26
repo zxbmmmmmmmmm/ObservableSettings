@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using SettingsSample.Common;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -19,7 +20,7 @@ public class ApplicationSettingsService
 
         foreach (var prop in properties)
         {
-            prop.SetValue(setting, container.GetSettings(prop.Name, prop.GetValue(setting)));
+            prop.SetValue(setting, container.GetSettings(prop.Name, prop.PropertyType, prop.GetValue(setting)));
         }
         setting.PropertyChanged += OnSettingPropertyChanged;
         _settingsToListen.Add(setting);
@@ -31,60 +32,47 @@ public class ApplicationSettingsService
         if (sender is not ObservableObject setting || e.PropertyName is null) return;
         var containerName = setting.GetType().Name;
         var container = ApplicationData.Current.LocalSettings.Containers[containerName];
-        container.Values[e.PropertyName] = setting.GetType().GetProperty(e.PropertyName)?.GetValue(setting);
+        var propInfo = setting.GetType().GetProperty(e.PropertyName);
+        container.SetSettings(e.PropertyName, propInfo?.GetValue(setting), propInfo?.PropertyType);
     }
 }
-
 public static class ApplicationDataContainerExtensions
 {
-    public static T GetSettings<T>(this ApplicationDataContainer container, string propertyName, T defaultValue)
+    public static T? GetSettings<T>(this ApplicationDataContainer container, string propertyName, T? defaultValue)
     {
         try
         {
-            if (container.Values.TryGetValue(propertyName,out var value) &&
-                container.Values[propertyName] is not null &&
-                !string.IsNullOrEmpty(container.Values[propertyName].ToString()))
+            if (container.Values.TryGetValue(propertyName, out var value))
             {
-                switch (defaultValue)
+
+                if (typeof(T).IsEnum)
                 {
-                    case bool:
-                        return (T)(object)bool.Parse(value.ToString());
-                    case Enum:
-                    {
-                        var tempValue = value.ToString();
-                        Enum.TryParse(typeof(T), tempValue, out var result);
+                    var tempValue = value.ToString();
+                    if(Enum.TryParse(typeof(T), tempValue, out var result))
                         return (T)result;
-                    }
-                    // WinRT base data types
-                    case bool or 
-                        byte or 
-                        char or 
-                        DateTimeOffset or
-                        double or
-                        Guid or 
-                        short or
-                        int or 
-                        long or
-                        float or
-                        string or
-                        TimeSpan or
-                        ushort or
-                        uint or
-                        ulong or
-                        Uri:
-                        return (T)container.Values[propertyName];
-                    case null:
-                        try
-                        {
-                            return (T)container.Values[propertyName];
-                        }
-                        catch
-                        {
-                            return JsonSerializer.Deserialize<T>((string)value);
-                        }
-                    default:
-                        return JsonSerializer.Deserialize<T>((string)value);
                 }
+
+                if (typeof(T) == typeof(bool) ||
+                    typeof(T) == typeof(byte) ||
+                    typeof(T) == typeof(char) ||
+                    typeof(T) == typeof(DateTimeOffset) ||
+                    typeof(T) == typeof(double) ||
+                    typeof(T) == typeof(Guid) ||
+                    typeof(T) == typeof(short) ||
+                    typeof(T) == typeof(int) ||
+                    typeof(T) == typeof(long) ||
+                    typeof(T) == typeof(float) ||
+                    typeof(T) == typeof(string) ||
+                    typeof(T) == typeof(TimeSpan) ||
+                    typeof(T) == typeof(ushort) ||
+                    typeof(T) == typeof(uint) ||
+                    typeof(T) == typeof(ulong) ||
+                    typeof(T) == typeof(Uri)
+                    )
+                {
+                    return (T)container.Values[propertyName];
+                }
+                return JsonSerializer.Deserialize<T>((string)value);
             }
             container.Values[propertyName] = defaultValue;
             return defaultValue;
@@ -94,4 +82,82 @@ public static class ApplicationDataContainerExtensions
             return defaultValue;
         }
     }
+
+    public static object? GetSettings(this ApplicationDataContainer container, string propertyName, Type valueType, object? defaultValue)
+    {
+        try
+        {
+            if (container.Values.TryGetValue(propertyName, out var value))
+            {
+                if (valueType.IsEnum)
+                {
+                    var tempValue = value.ToString();
+                    if (Enum.TryParse(valueType, tempValue, out var result))
+                        return result;
+                }
+
+                if (valueType == typeof(bool) || 
+                    valueType == typeof(byte) ||
+                    valueType == typeof(char) ||
+                    valueType == typeof(DateTimeOffset) ||
+                    valueType == typeof(double) ||
+                    valueType == typeof(Guid) ||
+                    valueType == typeof(short) ||
+                    valueType == typeof(int) ||
+                    valueType == typeof(long) ||
+                    valueType == typeof(float) ||
+                    valueType == typeof(string) ||
+                    valueType == typeof(TimeSpan) ||
+                    valueType == typeof(ushort) ||
+                    valueType == typeof(uint) ||
+                    valueType == typeof(ulong) ||
+                    valueType == typeof(Uri)
+                   )
+                {
+                    return container.Values[propertyName];
+                }
+                return JsonSerializer.Deserialize((string)value, valueType);
+            }
+            container.Values[propertyName] = defaultValue;
+            return defaultValue;
+        }
+        catch
+        {
+            return defaultValue;
+        }
+    }
+
+    public static void SetSettings(this ApplicationDataContainer container, string propertyName, object? value, Type? valueType)
+    {
+        if (value == null)
+        {
+            container.Values.Remove(propertyName);
+            return;
+        }
+        if (valueType == typeof(bool) ||
+            valueType == typeof(byte) ||
+            valueType == typeof(char) ||
+            valueType == typeof(DateTimeOffset) ||
+            valueType == typeof(double) ||
+            valueType == typeof(Guid) ||
+            valueType == typeof(short) ||
+            valueType == typeof(int) ||
+            valueType == typeof(long) ||
+            valueType == typeof(float) ||
+            valueType == typeof(string) ||
+            valueType == typeof(TimeSpan) ||
+            valueType == typeof(ushort) ||
+            valueType == typeof(uint) ||
+            valueType == typeof(ulong) ||
+            valueType == typeof(Uri)
+           )
+        {
+            container.Values[propertyName] = value;
+        }
+        else
+        {
+            container.Values[propertyName] = JsonSerializer.Serialize(value);
+        }
+    }
+
 }
