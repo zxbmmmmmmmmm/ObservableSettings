@@ -15,10 +15,12 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid>
+    <ScrollViewer>
         <StackPanel
+            Name="MainPanel"
             Margin="24"
             x:DefaultBindMode="TwoWay"
+            DataContext="{x:Bind ViewModel, Mode=OneTime}"
             Spacing="12">
             <controls:SettingsCard Header="String">
                 <TextBox Text="{x:Bind ViewModel.Settings.Name}" />
@@ -32,23 +34,33 @@
                 <ToggleSwitch IsOn="{x:Bind ViewModel.Settings.IsEnabled}" />
             </controls:SettingsCard>
 
-            <controls:SettingsExpander Header="List" ItemsSource="{x:Bind ViewModel.Settings.Students}">
+            <controls:SettingsExpander
+                Header="List"
+                IsExpanded="True"
+                ItemsSource="{x:Bind ViewModel.Settings.Students}">
                 <controls:SettingsExpander.ItemTemplate>
                     <DataTemplate x:DataType="common:Student">
-                        <controls:SettingsCard Header="{x:Bind Name}" IsClickEnabled="True">
-                            <NumberBox Value="{x:Bind Age}" />
+                        <controls:SettingsCard
+                            ActionIcon="Cancel"
+                            Command="{Binding ElementName=MainPanel, Path=DataContext.RemoveStudentCommand}"
+                            CommandParameter="{x:Bind}"
+                            Header="{x:Bind Name}"
+                            IsClickEnabled="True">
+                            <NumberBox SpinButtonPlacementMode="Inline" Value="{x:Bind Age}" />
                         </controls:SettingsCard>
                     </DataTemplate>
                 </controls:SettingsExpander.ItemTemplate>
                 <controls:SettingsExpander.ItemsFooter>
                     <controls:SettingsCard
+                        Margin="-1,0,-1,-1"
                         Command="{x:Bind ViewModel.AddStudentCommand, Mode=OneTime}"
+                        CornerRadius="0"
                         Header="Add"
                         HeaderIcon="Add"
                         IsClickEnabled="True">
                         <StackPanel Orientation="Horizontal" Spacing="12">
-                            <TextBox Text="{x:Bind ViewModel.Student.Name}" />
-                            <NumberBox Value="{x:Bind ViewModel.Student.Age}" />
+                            <TextBox Text="{x:Bind ViewModel.Name}" />
+                            <NumberBox SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.Age}" />
                         </StackPanel>
                     </controls:SettingsCard>
                 </controls:SettingsExpander.ItemsFooter>
@@ -56,5 +68,5 @@
 
 
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </Window>

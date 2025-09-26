@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SettingsSample.Common;
@@ -15,19 +16,28 @@ public partial class CommonSettings : ObservableObject
     public partial bool IsEnabled { get; set; }
 
     [ObservableProperty]
-    public partial ObservableCollection<Student> Students { get; set; } = [new("a", 15), new("b", 12), new("c", 18)];
+    public partial BindingList<Student> Students { get; set; } = [new("a", 15), new("b", 12), new("c", 18)];
 
-    public CommonSettings()
+    partial void OnStudentsChanged(BindingList<Student> oldValue, BindingList<Student> newValue)
     {
-        Students.CollectionChanged += (s,e) => OnPropertyChanged(nameof(Students));
+        oldValue.ListChanged -= OnListChanged;
+        newValue.ListChanged += OnListChanged;
     }
+
+    private void OnListChanged(object? sender, ListChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(Students));
+    }
+
+
 }
+
 
 public partial class Student(string name, int age) : ObservableObject
 {
     [ObservableProperty]
-    public string? Name { get; set; } = name;
+    public partial string Name { get; set; } = name;
 
     [ObservableProperty]
-    public int Age { get; set; } = age;
+    public partial int Age { get; set; } = age;
 }
