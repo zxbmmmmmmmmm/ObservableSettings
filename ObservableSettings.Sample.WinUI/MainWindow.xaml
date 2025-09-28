@@ -3,7 +3,7 @@
     x:Class="ObservableSettings.Sample.WinUI.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:common="using:ObservableSettings.Sample.Common"
+    xmlns:common="using:ObservableSettings"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:ObservableSettings.Sample.WinUI"

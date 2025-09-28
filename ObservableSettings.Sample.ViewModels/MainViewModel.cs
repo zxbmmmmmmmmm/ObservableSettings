@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ObservableSettings.Sample.Common;
+using ObservableSettings;
 
 namespace ObservableSettings.Sample.ViewModels;
 

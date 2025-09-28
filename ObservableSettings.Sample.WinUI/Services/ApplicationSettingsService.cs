@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using ObservableSettings.Sample.Common;
+using ObservableSettings;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -30,6 +30,7 @@ public class ApplicationSettingsService
     private void OnSettingPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         if (sender is not ObservableObject setting || e.PropertyName is null) return;
+        e.
         var containerName = setting.GetType().Name;
         var container = ApplicationData.Current.LocalSettings.Containers[containerName];
         var propInfo = setting.GetType().GetProperty(e.PropertyName);

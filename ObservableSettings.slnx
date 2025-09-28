@@ -13,5 +13,6 @@
       <Deploy />
     </Project>
   </Folder>
+  <Project Path="ObservableSettings.Generator/ObservableSettings.Generator.csproj" Id="94555864-7e22-4c5e-ac3e-9b702e050012" />
   <Project Path="ObservableSettings/ObservableSettings.csproj" />
 </Solution>

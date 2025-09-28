@@ -43,8 +43,9 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250916003" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ObservableSettings.Sample.Common\ObservableSettings.Sample.Common.csproj" />
     <ProjectReference Include="..\ObservableSettings.Sample.ViewModels\ObservableSettings.Sample.ViewModels.csproj" />
+    <ProjectReference Include="..\ObservableSettings\ObservableSettings.csproj" />
+    <ProjectReference Include="..\ObservableSettings\ObservableSettings.csproj" />
   </ItemGroup>
 
   <!--
