@@ -25,4 +25,16 @@ public partial class MainViewModel(CommonSettings settings) : ObservableObject
     {
         Settings.Students.Remove(student);
     }
+
+    [RelayCommand]
+    public void AddTag(string tag)
+    {
+        Settings.Tags.Add(tag);
+    }
+
+    [RelayCommand]
+    public void RemoveTag(string tag)
+    {
+        Settings.Tags.Remove(tag);
+    }
 }

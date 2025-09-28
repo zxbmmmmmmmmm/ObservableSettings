@@ -35,9 +35,44 @@
             </controls:SettingsCard>
 
             <controls:SettingsExpander
-                Header="List"
+                Header="ObservableCollection"
+                IsExpanded="True"
+                ItemsSource="{x:Bind ViewModel.Settings.Tags}">
+                <controls:SettingsExpander.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <controls:SettingsCard
+                            ActionIcon="Cancel"
+                            Command="{Binding ElementName=MainPanel, Path=DataContext.RemoveTagCommand}"
+                            CommandParameter="{x:Bind}"
+                            Header="{x:Bind}"
+                            IsClickEnabled="True">
+                            <controls:SettingsCard.Transitions>
+                                <AddDeleteThemeTransition />
+                            </controls:SettingsCard.Transitions>
+                        </controls:SettingsCard>
+                    </DataTemplate>
+                </controls:SettingsExpander.ItemTemplate>
+                <controls:SettingsExpander.ItemsFooter>
+                    <controls:SettingsCard
+                        Margin="-1,0,-1,-1"
+                        Command="{x:Bind ViewModel.AddTagCommand, Mode=OneTime}"
+                        CommandParameter="{x:Bind TagTextBox.Text, Mode=OneWay}"
+                        CornerRadius="0"
+                        Header="Add"
+                        HeaderIcon="Add"
+                        IsClickEnabled="True">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <TextBox x:Name="TagTextBox" Text="New Tag" />
+                        </StackPanel>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.ItemsFooter>
+            </controls:SettingsExpander>
+
+            <controls:SettingsExpander
+                Header="BindingList"
                 IsExpanded="True"
                 ItemsSource="{x:Bind ViewModel.Settings.Students}">
+                <TextBlock Text="{x:Bind ViewModel.Settings.Students.Count, Mode=OneWay}" />
                 <controls:SettingsExpander.ItemTemplate>
                     <DataTemplate x:DataType="common:Student">
                         <controls:SettingsCard
@@ -47,6 +82,9 @@
                             Header="{x:Bind Name}"
                             IsClickEnabled="True">
                             <NumberBox SpinButtonPlacementMode="Inline" Value="{x:Bind Age}" />
+                            <controls:SettingsCard.Transitions>
+                                <AddDeleteThemeTransition />
+                            </controls:SettingsCard.Transitions>
                         </controls:SettingsCard>
                     </DataTemplate>
                 </controls:SettingsExpander.ItemTemplate>
@@ -65,8 +103,6 @@
                     </controls:SettingsCard>
                 </controls:SettingsExpander.ItemsFooter>
             </controls:SettingsExpander>
-
-
         </StackPanel>
     </ScrollViewer>
 </Window>

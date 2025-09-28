@@ -1,6 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using System.Reflection;
 
 namespace SettingsSample.Common;
 
@@ -16,9 +21,29 @@ public partial class CommonSettings : ObservableObject
     public partial bool IsEnabled { get; set; }
 
     [ObservableProperty]
-    public partial BindingList<Student> Students { get; set; } = [new("a", 15), new("b", 12), new("c", 18)];
+    public partial ObservableBindingList<Student> Students { get; set; } = [new("a", 15), new("b", 12), new("c", 18)];
 
-    partial void OnStudentsChanged(BindingList<Student> oldValue, BindingList<Student> newValue)
+    [ObservableProperty]
+    public partial ObservableCollection<string> Tags { get; set; } = ["Tag1", "Tag2", "Tag3"];
+
+    public CommonSettings()
+    {
+        Tags.CollectionChanged += OnCollectionChanged;
+        Students.ListChanged += OnListChanged;
+    }
+
+    partial void OnTagsChanged(ObservableCollection<string> oldValue, ObservableCollection<string> newValue)
+    {
+        oldValue.CollectionChanged -= OnCollectionChanged;
+        newValue.CollectionChanged += OnCollectionChanged;
+    }
+
+    private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(Tags));
+    }
+
+    partial void OnStudentsChanged(ObservableBindingList<Student> oldValue, ObservableBindingList<Student> newValue)
     {
         oldValue.ListChanged -= OnListChanged;
         newValue.ListChanged += OnListChanged;
@@ -29,9 +54,7 @@ public partial class CommonSettings : ObservableObject
         OnPropertyChanged(nameof(Students));
     }
 
-
 }
-
 
 public partial class Student(string name, int age) : ObservableObject
 {
