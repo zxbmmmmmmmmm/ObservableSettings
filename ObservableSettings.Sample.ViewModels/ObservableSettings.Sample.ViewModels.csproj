@@ -12,7 +12,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SettingsSample.Common\SettingsSample.Common.csproj" />
+    <ProjectReference Include="..\ObservableSettings.Sample.Common\ObservableSettings.Sample.Common.csproj" />
   </ItemGroup>
 
 </Project>

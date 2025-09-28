@@ -17,14 +17,14 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SettingsSample.Common;
-using SettingsSample.WinUI.Services;
-using SettingsSample.ViewModels;
+using ObservableSettings.Sample.Common;
+using ObservableSettings.Sample.WinUI.Services;
+using ObservableSettings.Sample.ViewModels;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace SettingsSample.WinUI;
+namespace ObservableSettings.Sample.WinUI;
 
 /// <summary>
 /// Provides application-specific behavior to supplement the default Application class.

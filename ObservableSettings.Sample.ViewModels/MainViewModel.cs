@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SettingsSample.Common;
+using ObservableSettings.Sample.Common;
 
-namespace SettingsSample.ViewModels;
+namespace ObservableSettings.Sample.ViewModels;
 
 public partial class MainViewModel(CommonSettings settings) : ObservableObject
 {

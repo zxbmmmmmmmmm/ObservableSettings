@@ -15,7 +15,7 @@
   <mp:PhoneIdentity PhoneProductId="e496f8b7-4ad8-47bf-9f09-d3907d67f512" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>SettingsSample.WinUI</DisplayName>
+    <DisplayName>ObservableSettings.Sample.WinUI</DisplayName>
     <PublisherDisplayName>Betta_Fish</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -34,8 +34,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="SettingsSample.WinUI"
-        Description="SettingsSample.WinUI"
+        DisplayName="ObservableSettings.Sample.WinUI"
+        Description="ObservableSettings.Sample.WinUI"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">

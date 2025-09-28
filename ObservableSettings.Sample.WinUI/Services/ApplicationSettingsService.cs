@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SettingsSample.Common;
+using ObservableSettings.Sample.Common;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Windows.Storage;
 
-namespace SettingsSample.WinUI.Services;
+namespace ObservableSettings.Sample.WinUI.Services;
 
 public class ApplicationSettingsService
 {

@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace SettingsSample.Common;
+namespace ObservableSettings;
 
 public partial class ObservableBindingList<T> : BindingList<T>, INotifyCollectionChanged, INotifyPropertyChanged
 {

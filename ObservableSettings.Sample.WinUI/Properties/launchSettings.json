@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ObservableSettings.Sample.WinUI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ObservableSettings.Sample.WinUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

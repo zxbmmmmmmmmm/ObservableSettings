@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Reflection;
 
-namespace SettingsSample.Common;
+namespace ObservableSettings;
 
 public partial class CommonSettings : ObservableObject
 {
