@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ObservableSettings.Sample.Common;
 using ObservableSettings.Sample.WinUI.Services;
 using ObservableSettings.Sample.ViewModels;
 
