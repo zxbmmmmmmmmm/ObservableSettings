@@ -83,6 +83,7 @@ public class NotifyPropertyChangedGenerator : IIncrementalGenerator
         {
             var attribute = propertySymbol.GetAttributes().First(a => a.AttributeClass?.ToDisplayString() == NotifyPropertyChangedWhenAttributeFullName);
             var eventName = attribute.ConstructorArguments[0].Value as string;
+            if (eventName is null) return [];
 
             if (string.IsNullOrEmpty(eventName)) continue;
 
@@ -113,16 +114,30 @@ public class NotifyPropertyChangedGenerator : IIncrementalGenerator
                     Parameter(Identifier("oldValue")).WithType(IdentifierName(propertyType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))),
                     Parameter(Identifier("newValue")).WithType(IdentifierName(propertyType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))))
                 .WithBody(Block(
-                    ExpressionStatement(
-                        AssignmentExpression(SyntaxKind.SimpleAssignmentExpression,
-                            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("oldValue"), IdentifierName(eventName)),
-                            Token(SyntaxKind.MinusEqualsToken),
-                            IdentifierName(handlerMethodName))),
-                    ExpressionStatement(
-                        AssignmentExpression(SyntaxKind.SimpleAssignmentExpression,
-                            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("newValue"), IdentifierName(eventName)),
-                            Token(SyntaxKind.PlusEqualsToken),
-                            IdentifierName(handlerMethodName)))
+                    IfStatement(
+                        IsPatternExpression(
+                            IdentifierName("oldValue"),
+                            UnaryPattern(
+                                Token(SyntaxKind.NotKeyword),
+                                ConstantPattern(LiteralExpression(SyntaxKind.NullLiteralExpression)))),
+                        Block(
+                            ExpressionStatement(
+                                AssignmentExpression(SyntaxKind.SimpleAssignmentExpression,
+                                    MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("oldValue"), IdentifierName(eventName)),
+                                    Token(SyntaxKind.MinusEqualsToken),
+                                    IdentifierName(handlerMethodName))))),
+                    IfStatement(
+                        IsPatternExpression(
+                            IdentifierName("newValue"),
+                            UnaryPattern(
+                                Token(SyntaxKind.NotKeyword),
+                                ConstantPattern(LiteralExpression(SyntaxKind.NullLiteralExpression)))),
+                        Block(
+                            ExpressionStatement(
+                                AssignmentExpression(SyntaxKind.SimpleAssignmentExpression,
+                                    MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("newValue"), IdentifierName(eventName)),
+                                    Token(SyntaxKind.PlusEqualsToken),
+                                    IdentifierName(handlerMethodName)))))
                 ));
             members.Add(onChangedMethod);
 
