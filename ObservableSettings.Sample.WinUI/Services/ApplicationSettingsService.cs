@@ -30,7 +30,6 @@ public class ApplicationSettingsService
     private void OnSettingPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         if (sender is not ObservableObject setting || e.PropertyName is null) return;
-        e.
         var containerName = setting.GetType().Name;
         var container = ApplicationData.Current.LocalSettings.Containers[containerName];
         var propInfo = setting.GetType().GetProperty(e.PropertyName);

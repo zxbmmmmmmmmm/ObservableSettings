@@ -21,6 +21,7 @@ public partial class CommonSettings : ObservableObject
     public partial bool IsEnabled { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedWhen(nameof(Students.ListChanged))]
     public partial ObservableBindingList<Student> Students { get; set; } = [new("a", 15), new("b", 12), new("c", 18)];
 
     [ObservableProperty]
