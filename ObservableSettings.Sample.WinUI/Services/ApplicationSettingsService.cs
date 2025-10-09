@@ -2,12 +2,13 @@
 using ObservableSettings;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text.Json;
 using Windows.Storage;
 
 namespace ObservableSettings.Sample.WinUI.Services;
 
-public class ApplicationSettingsService
+public class ApplicationSettingsService : ISettingsService
 {
     private List<ObservableObject> _settingsToListen = [];
     public T LoadAndListenSettings<T>() where T : ObservableObject, new()
@@ -27,7 +28,16 @@ public class ApplicationSettingsService
         return setting;
     }
 
-    private void OnSettingPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    public void StopListening()
+    {
+        foreach (var setting in _settingsToListen)
+        {
+            setting.PropertyChanged -= OnSettingPropertyChanged;
+        }
+        _settingsToListen.Clear();
+    }
+
+    private static void OnSettingPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (sender is not ObservableObject setting || e.PropertyName is null) return;
         var containerName = setting.GetType().Name;

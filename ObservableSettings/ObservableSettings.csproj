@@ -6,5 +6,9 @@
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
+  <ItemGroup>
+  	<ProjectReference Include="..\ObservableSettings.Generator\ObservableSettings.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  	<None Include="..\$(AssemblyName).Generator\$(OutputPath)\..\netstandard2.0\$(AssemblyName).Generator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
 
 </Project>

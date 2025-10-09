@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:ObservableSettings.Sample.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:common1="using:ObservableSettings.Sample.Common"
     Title="ObservableSettings.Sample.WinUI"
     mc:Ignorable="d">
 
@@ -74,7 +75,7 @@
                 ItemsSource="{x:Bind ViewModel.Settings.Students}">
                 <TextBlock Text="{x:Bind ViewModel.Settings.Students.Count, Mode=OneWay}" />
                 <controls:SettingsExpander.ItemTemplate>
-                    <DataTemplate x:DataType="common:Student">
+                    <DataTemplate x:DataType="common1:Student">
                         <controls:SettingsCard
                             ActionIcon="Cancel"
                             Command="{Binding ElementName=MainPanel, Path=DataContext.RemoveStudentCommand}"
