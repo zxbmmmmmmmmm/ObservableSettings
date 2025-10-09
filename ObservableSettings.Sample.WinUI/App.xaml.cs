@@ -21,7 +21,7 @@ public partial class App : Application
     private static readonly IHost _host = Host.CreateDefaultBuilder()
         .ConfigureServices((context, services) =>
         {
-            var settingsService = new ApplicationSettingsService();
+            var settingsService = new JsonFileSettingsService();
             var commonSettings = settingsService.LoadAndListenSettings<CommonSettings>();
             services.AddSingleton(settingsService);
             services.AddSingleton(commonSettings);
