@@ -22,7 +22,7 @@ public partial class App : Application
         .ConfigureServices((context, services) =>
         {
             var settingsService = new JsonFileSettingsService();
-            var commonSettings = settingsService.LoadAndListenSettings<CommonSettings>();
+            var commonSettings = settingsService.LoadAndListen<CommonSettings>();
             services.AddSingleton(settingsService);
             services.AddSingleton(commonSettings);
             services.AddSingleton<MainViewModel>();

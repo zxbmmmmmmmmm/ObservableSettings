@@ -11,7 +11,7 @@ namespace ObservableSettings.Sample.WinUI.Services;
 public class ApplicationSettingsService : ISettingsService
 {
     private List<ObservableObject> _settingsToListen = [];
-    public T LoadAndListenSettings<T>() where T : ObservableObject, new()
+    public T LoadAndListen<T>() where T : ObservableObject, new()
     {
         if (!ApplicationData.Current.LocalSettings.Containers.ContainsKey(typeof(T).Name))
             ApplicationData.Current.LocalSettings.CreateContainer(typeof(T).Name, ApplicationDataCreateDisposition.Always);

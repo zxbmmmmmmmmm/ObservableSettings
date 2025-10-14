@@ -14,7 +14,7 @@ public class JsonFileSettingsService : ISettingsService
 
     private string BaseDirectory { get; init; } = Package.Current.InstalledPath;
 
-    public T LoadAndListenSettings<T>() where T : ObservableObject, new()
+    public T LoadAndListen<T>() where T : ObservableObject, new()
     {
         var fileName = typeof(T).Name + ".json";
         var dir = Path.Combine(BaseDirectory, fileName);

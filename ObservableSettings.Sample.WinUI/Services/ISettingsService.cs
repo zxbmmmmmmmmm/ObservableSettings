@@ -4,6 +4,6 @@ namespace ObservableSettings.Sample.WinUI.Services;
 
 public interface ISettingsService
 {
-    public T LoadAndListenSettings<T>() where T : ObservableObject, new();
+    public T LoadAndListen<T>() where T : ObservableObject, new();
     public void StopListening();
 }
