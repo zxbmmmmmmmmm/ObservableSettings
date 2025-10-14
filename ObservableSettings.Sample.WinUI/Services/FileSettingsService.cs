@@ -40,6 +40,14 @@ public class JsonFileSettingsService : ISettingsService
         return setting;
     }
 
+    public void SaveAll()
+    {
+        foreach (var setting in _settingsToListen)
+        {
+            Save(setting);
+        }
+    }
+
     public void StopListening()
     {
         foreach (var setting in _settingsToListen)
@@ -47,6 +55,13 @@ public class JsonFileSettingsService : ISettingsService
             setting.PropertyChanged -= OnSettingPropertyChanged;
         }
         _settingsToListen.Clear();
+    }
+
+    private void Save(ObservableObject setting)
+    {
+        var fileName = setting.GetType().Name + ".json";
+        var dir = Path.Combine(BaseDirectory, fileName);
+        File.WriteAllText(dir, JsonSerializer.Serialize(setting));
     }
 
     private T CreateDefaultSetting<T>(string dir) where T : ObservableObject, new()
@@ -61,8 +76,6 @@ public class JsonFileSettingsService : ISettingsService
     private void OnSettingPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (sender is not ObservableObject setting || e.PropertyName is null) return;
-        var fileName = setting.GetType().Name + ".json";
-        var dir = Path.Combine(BaseDirectory, fileName);
-        File.WriteAllText(dir, JsonSerializer.Serialize(sender));
+        Save(setting);
     }
 }

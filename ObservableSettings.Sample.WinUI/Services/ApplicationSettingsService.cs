@@ -28,6 +28,25 @@ public class ApplicationSettingsService : ISettingsService
         return setting;
     }
 
+    public void SaveAll()
+    {
+        foreach(var setting in _settingsToListen)
+        {
+            Save(setting);
+        }
+    }
+
+    public void Save(ObservableObject setting)
+    {
+        var containerName = setting.GetType().Name;
+
+        var container = ApplicationData.Current.LocalSettings.Containers[containerName];
+        foreach(var prop in setting.GetType().GetProperties())
+        {
+            container.SetSettings(prop.Name, prop?.GetValue(setting), prop?.PropertyType);
+        }
+    }
+
     public void StopListening()
     {
         foreach (var setting in _settingsToListen)
