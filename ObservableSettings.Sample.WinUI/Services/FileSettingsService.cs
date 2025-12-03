@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using ObservableSettings.Sample.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Windows.ApplicationModel;
 
 namespace ObservableSettings.Sample.WinUI.Services;
@@ -61,7 +63,8 @@ public class JsonFileSettingsService : ISettingsService
     {
         var fileName = setting.GetType().Name + ".json";
         var dir = Path.Combine(BaseDirectory, fileName);
-        File.WriteAllText(dir, JsonSerializer.Serialize(setting));
+        // TODO: Fix JsonSerializer
+        File.WriteAllText(dir, JsonSerializer.Serialize(setting, SourceGenerationContext.Default.CommonSettings));
     }
 
     private T CreateDefaultSetting<T>(string dir) where T : ObservableObject, new()
@@ -79,3 +82,7 @@ public class JsonFileSettingsService : ISettingsService
         Save(setting);
     }
 }
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(CommonSettings))]
+internal partial class SourceGenerationContext : JsonSerializerContext { }
